@@ -1,0 +1,600 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../bower_components/iron-icons/social-icons.html">
+<link rel="import" href="../bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animatable-behavior.html">
+<link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="myCollapsibleTree.html">
+<link rel="import" href="mySunBurstChart.html">
+<link rel="import" href="my-grid.html">
+<!-- <link rel="import" href="my-view2.html">-->
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-view1">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      paper-button.green {
+        background-color: var(--paper-indigo-300);
+        /*background-color: var(--paper-blue-400);  */
+        color: white;
+        width: 15%;
+        font-size: 10pt;
+      }
+
+      paper-button.green[active] {
+        background-color: var(--paper-indigo-700);
+      }
+
+    </style>
+
+<body>
+    <iron-ajax
+              id="teamListJson"
+              auto
+              url="https://ganapathyrajalingam.github.io/ftteamstructure/team.json"
+              params="{{param}}"
+              handle-as="json"
+              on-response="handleTeamResponse"
+              last-response="{{teamdatad}}">
+            </iron-ajax>
+
+            <div class="card">
+              <div class="circle">1</div>
+              <h1>View One</h1>
+              <h1>View One</h1>
+            </div>
+
+
+            <div class="card">
+              <div class="crad1">
+                <div class="circle">1</div>
+
+                <h1>Visualization of Data </h1>
+                <!-- <p>Options : </p>
+                <p>1. Collapsible Tree.</p>
+                <p>2. SunBurst Chart.</p>
+              -->
+              <div class="flex layout horizontal wrap">
+                <paper-button id="tree" class="fav green" on-click="treedisp" data-dialog="csvDisp" raised>
+                  <iron-icon icon="social:share"></iron-icon> Tree
+                </paper-button>
+                <paper-button id="SunBurst" class="fav green" on-click="sunburstdisp" data-dialog="sunburstDisp" raised>
+                  <iron-icon icon="image:flare"></iron-icon> SunBurst
+                </paper-button>
+                <paper-button id="grid" class="fav green" on-click="griddisp" data-dialog="gridDisp" raised>
+                  <iron-icon icon="image:grid-on"></iron-icon> Grid Disp
+                </paper-button>
+
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="card">
+            <div class="circle">2</div>
+            <h1>Converters of Data</h1>
+            <!-- <p>Options : </p>
+            <p>1. JSON ==> CSV.</p>
+            <p>2. CSV ==> JSON.</p>
+          -->
+          <div class="flex layout horizontal wrap">
+            <paper-button id="tree" class="fav green"  raised>
+            <!--  <iron-icon icon="social:share"></iron-icon> -->
+              JSON ==> CSV
+            </paper-button>
+            <paper-button id="SunBurst" class="fav green" on-click="convertCsvToJson" data-dialog="jsonDisp" raised>
+              <!-- <iron-icon icon="image:flare"></iron-icon>-->
+              CSV ==> JSON
+            </paper-button>
+          </div>
+
+          <div id="csvTable">
+            <!--       <my-grid formattedjson={{this.formattedjson1}}></my-grid> -->
+            <template is="dom-repeat" items="{{this.teamdata1[0]}}">
+              <paper-material class="card" elevation="5">
+                <p>Name : {{item.name}}</p>
+                <p>Role : {{item.role}}</p>
+                <p>Exp  : {{item.milestones}}</p>
+              </paper-material>
+            </template>
+
+            <p> Display csv table here </p>
+          </div>
+
+        </div>
+
+
+    <div class="flex layout horizontal wrap">
+     <div class="card1">
+
+      <!--    <div class="card"> -->
+          <paper-card class="card2" heading="Input Data" >
+            <div class="card-content">Formats Supported : JSON, CSV. As of now handled loading Nested JSON ==> CSV ==> Normal JSON array. </div>
+            <div class="card-actions">
+              <paper-input label="File Location" id="inputWithButton" value={{filelocation::input}}>
+                <iron-icon icon="icons:folder-open" prefix></iron-icon>
+                <iron-icon icon="icons:refresh" suffix></iron-icon>
+              </paper-input>
+              <paper-input label="FileName" id="inputWithButton">
+                <iron-icon icon="editor:insert-drive-file" prefix></iron-icon>
+                <!-- <div prefix>https://ganapathyrajalingam.github.io/ftteamstructure/</div> -->
+                <div suffix>.json</div>
+                <paper-icon-button suffix onclick="clearInput()" icon="clear" alt="clear" title="clear">
+                </paper-icon-button>
+              </paper-input>
+              <paper-button  id="addNode" class="fav green" on-click="addNode()" raised>
+                Upload Data
+              </paper-button>
+            </div>
+          </paper-card>
+      </div>
+
+         <div class="card1">
+          <paper-card class="card2" heading="Add Data" >
+            <div class="card-content">Options Supported : Adding Node dynamically onto the TREE.</div>
+            <div class="card-actions">
+              <paper-input id="nodeName"  class="inp" label="Data" type="String" value="" >
+                <iron-icon icon="icons:create" prefix></iron-icon>
+              </paper-input>
+              <paper-input id="parentNode" class="inp" label="Parent Data" type="String" value="FT" >
+                <iron-icon icon="icons:create" prefix></iron-icon>
+              </paper-input>
+              <paper-button  id="addNode" class="fav green" on-click="addNode()" raised>
+                Add Data
+              </paper-button>
+            </div>
+          </paper-card>
+        </div>
+      </div>
+        <!-- </div> -->
+
+
+          <paper-dialog id="csvDisp"  class="csvDisp2" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+            <div id="dispteamalloc" > </div>
+
+          </paper-dialog>
+
+
+          <paper-dialog id="sunburstDisp"  class="csvDisp2" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+            <div id="dispteamalloc1" > </div>
+
+          </paper-dialog>
+
+          <paper-dialog id="gridDisp"  class="csvDisp2" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+            <div id="dispgrid" > </div>
+
+          </paper-dialog>
+
+          <div id="sunburst-container" class="disp"></div>
+
+
+  </template>
+  <!-- <script src="teamAllocation.js"></script> -->
+
+  <script>
+    Polymer({
+      is: 'my-view1',
+      behaviors: [Polymer.NeonAnimatableBehavior],
+
+      properties: {
+        filelocation: {
+          type: String,
+          notify: true,
+          value: 'https://ganapathyrajalingam.github.io/ftteamstructure/'
+        },
+        filename:{
+          type: String,
+          notify: true,
+          value: 'team'
+        },
+        teamdata: {
+          type: Array,
+          value: function(){
+            return [];
+          },
+          //reflectToAttribute: true,
+          notify: true
+        },
+        teamdata1: {
+          type: Array,
+          value: function(){
+            return [];
+          },
+          //reflectToAttribute: true,
+          notify: true
+        },
+        rootObject: {
+            type: Object,
+            value: function(){
+              return {};
+            },
+            notify: true
+          },
+          param: {
+            type: Object,
+            value: function(){
+              return {};
+            },
+            notify: true
+          },
+          showcsv:{
+            type: Boolean,
+            value: false,
+            notify: true
+          },
+          formattedjson1: {
+            type: Array,
+            value: function(){
+              return [];
+            },
+            reflectToAttribute: true,
+            notify: true
+          },
+        },
+
+
+              ready: function(){
+          //      this.spotarr = [];
+               //this.param = [];
+               console.log('ready fn called for myView');
+               this.showcsv = 0;
+              },
+
+              attached: function(){
+                console.log("attached fn called");
+  //this.loadJsonData();
+  this.param = {};
+},
+
+      loadJsonData: function(){
+        console.log(" Load JSON Data function called ");
+        // load the external data
+      d3.json("https://ganapathyrajalingam.github.io/ftteamstructure/team.json", function(error, treeData1) {
+    //    d3.json("../data/team.json", function(error, treeData1) {
+          this.teamdata = treeData1.teamListDetails;
+          this.rootObject = treeData1.teamListDetails[0];
+          console.log( treeData1.teamListDetails[0]);
+          console.log(this.teamdata);
+          console.log(this.rootObject);
+          //makeChart(treeDatabkup.teamListDetails[0]);
+          //makeSunBurstChart(treeDatabkup.teamListDetails[0]);
+          //jsonfileloaded = 1;
+        });
+      },
+
+      handleTeamResponse: function(data){
+        console.log("post ajax call ");
+        console.log(data.detail.response.teamListDetails);
+        this.teamdata = data.detail.response.teamListDetails;
+        this.rootObject = data.detail.response.teamListDetails[0];
+        console.log(this.teamdata);
+        console.log(this.rootObject);
+        this.formattedjson1 = this._formatjson();
+        console.log(this.formattedjson1);
+      },
+
+      treedisp: function(e){
+        console.log(" Tree Disp function called ");
+    //    this.loadJsonData();
+        console.log(this.teamdata);
+        console.log(this.rootObject);
+        console.log(e.target);
+        this.showcsv = 1;
+        this.teamdata1 = this.teamdata;
+        var button = e.target;
+                if (!button.hasAttribute('data-dialog')) {
+                  return;
+                }
+                console.log('Json to CSV button clicked');
+
+                  var id = button.getAttribute('data-dialog');
+                  console.log(id);
+                  console.log(this.$[id]);
+                  console.log(this.$["csvDisp"]);
+                  //var dialog = document.getElementById(id);
+
+                  var el1 = document.createElement('my-collapsibletree');
+                  //var el1 = document.createElement('my-view2');
+                  //el1.teamdata2  = this.teamdata;
+                  el1.data  = this.teamdata;
+                  el1.showcsv2 = true;
+                  console.log(' Event trigerred');
+                  //this.$.csvDisp.open();
+                  console.log(el1.data);
+                  console.log(el1);
+                  Polymer.dom(this.$["dispteamalloc"]).appendChild(el1);
+                  console.log("post appendChild");
+                  console.log(this.$["dispteamalloc"]);
+    //              this._formatjson();
+                  var dialog = this.$[id];
+                  if (dialog) {
+                    console.log(dialog);
+                    this.$[id].toggle();
+                  //  dialog.open();
+                  }
+      },
+
+      sunburstdisp: function(e){
+        console.log(" Sunburst Disp function called ");
+    //    this.loadJsonData();
+        console.log(this.teamdata);
+        console.log(this.rootObject);
+        console.log(e.target);
+        this.showcsv = 1;
+        this.teamdata1 = this.teamdata;
+        var button = e.target;
+                if (!button.hasAttribute('data-dialog')) {
+                  return;
+                }
+                console.log('SunBurst button clicked');
+
+                  var id = button.getAttribute('data-dialog');
+                  console.log(id);
+                  console.log(this.$[id]);
+                  console.log(this.$["sunburstDisp"]);
+                  //var dialog = document.getElementById(id);
+
+                  var el1 = document.createElement('my-sunburstchart');
+                  //var el1 = document.createElement('my-view2');
+                  //el1.teamdata2  = this.teamdata;
+                  el1.data  = this.teamdata;
+                  el1.showcsv3 = true;
+                  console.log(' Event trigerred');
+                  //this.$.csvDisp.open();
+                  console.log(el1.data);
+                  console.log(el1);
+                  Polymer.dom(this.$["dispteamalloc1"]).appendChild(el1);
+                  console.log("post appendChild");
+                  console.log(this.$["dispteamalloc1"]);
+
+                  var dialog = this.$[id];
+                  if (dialog) {
+                    console.log(dialog);
+                    this.$[id].toggle();
+                  //  dialog.open();
+                  }
+
+      },
+
+
+            _formatjson: function(){
+
+              var finalCsvArray = [[]];
+              var nameArr = [];
+              var parentArr = [];
+              var roleArr = [];
+              var milestonesArr = [];
+              var jarray =[];
+              var data = this.teamdata[0];
+              console.log(data);
+              var csvContent = "data:text/csv;charset=utf-8,";
+              var csvArray = [];
+
+              var parentStr;
+              var currObj = data;
+
+              //            console.log(root);
+                          var i=0;
+                          var k=0;
+                          var x=0;
+                          var y=0;
+
+                          function recursivefnforTreetoArray(data, key, csvArray, csvContent, nameArr, parentArr, parentStr, x, roleArr, milestonesArr) {
+                                  var newArray = 0;
+                          //        console.log("recursivefnforTreetoArray called");
+                          //        console.log(data);
+                          //        console.log(key);
+                          //        console.log(data[key]);
+                          console.log(data["role"]);
+                                  csvArray.push(data[key]);
+                                  nameArr.push(data[key]);
+                                  parentArr.push(parentStr);
+                                  roleArr.push(data["role"]);
+                                  milestonesArr.push(data["milestones"]);
+                                  //finalCsvArray[x].push(data[key]);
+                                  console.log("post unshift ie prefixing ");
+                          //        console.log(data.children);
+                                  x++;
+
+                                  for(var index=0;index<data.children.length;index++){
+                                    var currObj = data.children[index];
+
+                                    var elementArray = data.children[index][key];
+                          //          console.log(elementArray);
+                                    csvArray.push(elementArray);
+                                    nameArr.push(elementArray);
+                                    parentArr.push(data[key]);
+                                    roleArr.push(data.children[index]["role"]);
+                                    milestonesArr.push(data.children[index]["milestones"]);
+
+                                    //finalCsvArray[x].push(data[key]);
+
+                                    console.log(csvArray.join(","));
+                                    if ( currObj.children){
+                                      var len = currObj.children.length;
+                                      var i = 0;
+                                      x++;
+                                      for ( var i=0; i < len; i++){
+                                        console.log("calling iteratively for the child");
+                          //              console.log(index);
+                          //              console.log(currObj.children);
+                                        parentStr = elementArray;
+                                        csvContent = recursivefnforTreetoArray(currObj.children[i], key, csvArray, csvContent, nameArr, parentArr, parentStr, x, roleArr, milestonesArr);
+                          //              console.log("i tree branch till leaf node done ");
+                          //              console.log(i);
+                                        //console.log(data.children[i][key] + "Processed");
+                                        console.log(data.children.length);
+                                      }
+                                    }
+                                    else{
+                                      console.log('new array shld start');
+                                      newArray = 1;
+                                    }
+                                  }
+                                  //console.log(data.children);
+                                  //csvContent += data.children[0].join("\n");
+                                  if ( newArray == 1){
+                                    console.log(csvArray);
+                                  //  finalCsvArray[0].push(csvArray);
+                                    //csvContent += nameArr.join(",");
+                                    //csvContent +=  ",\r\n,";
+                                    //csvContent += parentArr.join(",");
+                                    //csvContent +=  ",\r\n,";
+                                    //console.log("CSV Content ");
+                                    //console.log(csvContent);
+                                    //console.log("node ");
+                                    //console.log(nameArr);
+                                    //console.log("Parent Arr");
+                                    //console.log(parentArr);
+                                  }
+
+                                  return csvContent;
+                              }
+
+
+                                    function csvToJson(jarray){
+                                      console.log(" csv to json");
+                                      //var text = 'parent,name\n,Eve\nEve,Seth\nEve,Enos\nSeth,Noam\nSeth,Abel\nEve,Awan\nEve,Enoch\nAwan,Azura';
+                                      var text = jarray.join("\n");
+
+                                      //console.log(jarray);
+                                      console.log(jarray.join("\n"));
+                                      var table = d3.csvParse(text);
+                                      console.log(" table");
+                                      console.log(table);
+                                      console.log(JSON.stringify(table));
+                                        this.formattedjson1 = table;
+                                        console.log("this.formattedjson1");
+                                        console.log(this.formattedjson1);
+
+                                        return this.formattedjson1;
+                                    }
+
+
+                              for (var key in data) {
+                                if( k==0){  // remove this condn to handle multiple fields in the object apart from "NAME"
+              //                  console.log(key);
+              //                  console.log(data.hasOwnProperty(key));
+                                if (data.hasOwnProperty(key)) {
+                                    //csvArray[i] = (data[key]);
+                                    nameArr.push("ChildNodes");
+                                    parentArr.push("ParentNodes");
+                                    roleArr.push("Role");
+                                    milestonesArr.push("MileStones");
+                                    parentStr = "";
+                                    x=0;
+                                   csvContent = recursivefnforTreetoArray(data, key, csvArray,csvContent, nameArr, parentArr, parentStr, x,roleArr, milestonesArr );
+                                }
+                                //csvContent += "\n";
+                                csvContent += nameArr.join(",");
+                                csvContent +=  ",\r\n,";
+                                csvContent += parentArr.join(",");
+                                csvContent +=  ",\r\n,";
+                                console.log("csvContent");
+                                console.log(csvContent);
+                                console.log("node ");
+                                console.log(nameArr);
+                                console.log("Parent Arr");
+                                console.log(parentArr);
+                                i++;
+                              }
+                              k++;
+                              }
+
+
+                          csvContent += nameArr.join(",");
+                          csvContent +=  ",\r\n,";
+                          csvContent += parentArr.join(",");
+                          csvContent +=  ",\r\n,";
+
+                          //var encodedUri = encodeURI(csvContent);
+                          //var link = document.createElement("a");
+                          //link.setAttribute("href", encodedUri);
+                          //link.setAttribute("download", "team.csv");
+
+                          //link.click();
+
+                          for ( var i=0, l=Math.min(nameArr.length, parentArr.length); i<l; i++ ) {
+                jarray[i] = [parentArr[i], [nameArr[i], [roleArr[i], [milestonesArr[i]]]]];
+              }
+                          this.formattedjson1 = csvToJson(jarray);
+                          console.log("After csv to json array ");
+                          console.log(this.formattedjson1);
+
+                          return this.formattedjson1;
+            },
+
+
+                  griddisp: function(e){
+                      console.log(" Grid disp called ");
+                      console.log(this.formattedjson1);
+                      //this._formatjson();
+                      console.log(this.formattedjson1);
+                      console.log("after format json procesing and before invoking paper dialog of grid ");
+                      var button = e.target;
+                              if (!button.hasAttribute('data-dialog')) {
+                                return;
+                              }
+                              console.log('Grid display button clicked');
+
+                                var id = button.getAttribute('data-dialog');
+                                console.log(id);
+                                console.log(this.$[id]);
+                                console.log(this.$["gridDisp"]);
+                                //var dialog = document.getElementById(id);
+
+                                var el1 = document.createElement('my-grid');
+                                //var el1 = document.createElement('my-view2');
+                                //el1.teamdata2  = this.teamdata;
+                                el1.fmtdjson  = this.formattedjson1;
+                                el1.griddata = this.teamdata;
+
+                                console.log(' Event trigerred');
+                                //this.$.csvDisp.open();
+                                console.log(el1.teamdata);
+                                console.log(el1.fmtdjson);
+                                console.log(this.formattedjson1);
+                                console.log(el1);
+                                Polymer.dom(this.$["dispgrid"]).appendChild(el1);
+                                console.log("post appendChild");
+                                console.log(this.$["dispgrid"]);
+
+                                var dialog = this.$[id];
+                                if (dialog) {
+                                  console.log(dialog);
+                                  this.$[id].toggle();
+                                //  dialog.open();
+                                }
+                  },
+
+
+    });
+  </script>
+</dom-module>

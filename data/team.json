@@ -1,0 +1,365 @@
+{
+  "teamListDetails" :
+  [{
+    "name": "FT",
+    "shortName" : "FT",
+	"type" : "black",
+	"shape" : "circle",
+  "milestones" : " TBD",
+  "role" : "Team",
+  "value" : "1",
+    "children":
+	[
+	{
+        "name": "Beta Support",
+        "shortName" : "BetaSupp",
+		"type" : "lightsteelblue",
+		"shape" : "square",
+    "milestones" : " UAT",
+    "role" : "Team",
+        "children":
+		[
+        {
+            "name": "Ganapathy Rajalingam",
+            "shortName" : "Gana",
+			"type" : "lightgreen",
+			"shape" : "triangle-up",
+      "milestones" : "HNB, Sampath UAT/GoLive & Capital Charge Consolidation",
+      "role" : "Senior Technical Manager",
+            "children":
+			[
+            {
+                "name": "Vishwanathan K",
+                "shortName" : "KV",
+                "size": 3938,
+				"type" : "lightblue",
+				"shape" : "diamond",
+        "milestones" : "Axis CR, HNB, Sampath UAT/GoLive",
+        "role" : "Product Technical Lead",
+				"children" :
+				[
+				{
+					"name": "HNB-1",
+          "shortName" : "HNB",
+					"type" : "lightblue",
+					"shape" : "triangle-down",
+          "milestones" : "HNB UAT",
+					"children" :
+					[
+					{
+						"name" : "DELIVERRED - FIFO - Enablement in SecPos",
+            "shortName" : "SecPos"
+					},
+					{
+						"name" : "OPEN - FIFO - Backdated cases handling",
+            "shortName" : "SecPos"
+					},
+					{
+						"name" : "OPEN - FIFO - Short Sale cases handling",
+            "shortName" : "SecPos"
+					},
+					{
+						"name" : "OPEN - SecPos - UnAmortised prem issue with Trade Date realisation",
+            "shortName" : "SecPos"
+					}
+					]
+				},
+				{
+					"name" : "Sampath-1",
+          "shortName" : "SMB",
+					"type" : "lightblue",
+					"shape" : "triangle-down",
+          "milestones" : "HNB UAT",
+					"children" :
+					[
+					{
+						"name" : "OPEN - SecPos - MTM Price on Month End",
+            "shortName" : "SecPos"
+					}
+					]
+				},
+				{
+					"name" : "AXIS-1",
+          "shortName" : "AXIS",
+					"type" : "lightblue",
+					"shape" : "triangle-down",
+          "milestones" : "HNB UAT",
+					"children" :
+					[
+					{
+						"name" : "ONGOING - Dealer Pad - New requirements during UAT",
+            "shortName" : "DealerPad"
+					}
+					]
+				},
+				{
+					"name" : "BRAC-1",
+          "shortName" : "BRAC",
+					"type" : "lightblue",
+					"shape" : "triangle-down",
+          "milestones" : "HNB UAT",
+					"children" :
+					[
+					{
+						"name" : "OPEN - SecPos - MTM Price on Month End",
+            "shortName" : "SecPos"
+					}
+					]
+				}
+				]
+            },
+            {
+                "name": "Krishna Kishore",
+                "shortName" : "Kishore",
+				"type" : "#EE9A4D",
+                "size": 3812,
+				"shape" : "diamond",
+        "milestones" : "HNB, Sampath UAT/GoLive & Capital Charge Consolidation",
+        "role" : "Product Technical Lead",
+				"children" :
+				[
+				{
+					"name": "HNB-2",
+          "shortName" : "HNB",
+					"type" : "#EE9A4D",
+					"shape" : "triangle-down",
+          "milestones" : "HNB UAT",
+					"children" :
+					[
+					{
+						"name" : "OPEN - SecPos - Yield Calc when MT date falling on holiday for BOND-EQUIVALENT method",
+            "shortName" : "SecPos"
+					},
+					{
+						"name" : "OPEN - Structured Products License Changes",
+            "shortName" : "License"
+					},
+					{
+						"name" : "DELIVERRED - Tolerance - Rate Tolerance Changes",
+            "shortName" : "Tolrnce"
+					}
+					]
+				},
+				{
+					"name" : "UBI - Phase I-2",
+          "shortName" : "UBI",
+					"type" : "#EE9A4D",
+					"shape" : "triangle-down",
+          "milestones" : "HNB UAT",
+					"children" :
+					[
+					{
+						"name" : "OPEN - Capital Charge - Pending Items post Testing",
+            "shortName" : "Basel 3"
+					},
+					{
+						"name" : "OPEN - UAT Issues",
+            "shortName" : "UAT"
+					}
+					]
+				},
+				{
+					"name" : "UBI - Phase II-2",
+          "shortName" : "UBI",
+					"type" : "#EE9A4D",
+					"shape" : "triangle-down",
+          "milestones" : "HNB UAT",
+					"children" :
+					[
+					{
+						"name" : "OPEN - Capital Charge - Consolidation",
+            "shortName" : "Basel 3"
+					}
+					]
+				}
+				]
+            },
+			{
+                "name": "Manjunath Sharanappa",
+                "shortName" : "Manjunath",
+				"type" : "lightgreen",
+                "size": 6714,
+				"shape" : "diamond",
+        "milestones" : "HNB, Sampath UAT/GoLive & Capital Charge Consolidation",
+        "role" : "Product Technical Lead",
+				"children" :
+				[
+				{
+					"name": "HNB-3",
+          "shortName" : "HNB",
+					"type" : "lightgreen",
+					"shape" : "triangle-down",
+          "milestones" : "HNB UAT",
+					"children" :
+					[
+					{
+						"name" : "OPEN - MAP Interface related changes",
+            "shortName" : "MAP"
+					}
+					]
+				},
+				{
+					"name" : "UBI - Phase II-3",
+          "shortName" : "UBI",
+					"type" : "lightgreen",
+					"shape" : "triangle-down",
+          "milestones" : "HNB UAT",
+					"children" :
+					[
+					{
+						"name" : "OPEN - Capital Charge - Consolidation",
+            "shortName" : "Basel 3"
+					}
+					]
+				},
+				{
+					"name" : "UBI - Phase I-3",
+          "shortName" : "UBI",
+					"type" : "lightgreen",
+					"shape" : "triangle-down",
+          "milestones" : "HNB UAT",
+					"children" :
+					[
+					{
+						"name" : "ONGOING - UAT Issues",
+            "shortName" : "UAT"
+					}
+					]
+				}
+				]
+            }
+			]
+        },
+		{
+            "name": "Swapnil Kadam",
+            "children":
+			[
+            {
+                "name": "Nikhil Bhat",
+                "size": 3534
+            },
+			{
+                "name": "Chetan Naik",
+                "size": 5731
+            },
+			{
+                "name": "Dhinesh Ramakrishnan",
+                "shortName" : "Dhinesh",
+                "size": 7840
+            },
+			{
+                "name": "Lavanya Acharya",
+                "shortName" : "Lavanya",
+                "size": 5914
+            }
+			]
+        },
+		{
+            "name": "Vishal Kashyap",
+            "shortName" : "Vishal",
+            "children":
+			[
+            {
+                "name": "Harmanpreet Singh",
+                "shortName" : "Harman",
+                "size": 7074
+            },
+			{
+                "name": "Ranganathan Madanagopal",
+                "shortName" : "Ranga",
+                "size": 7074
+            }
+			]
+        }
+		]
+    },
+	{
+        "name": "Development",
+        "children":
+		[
+			{
+            "name": "Ravi Shankar Prasad",
+            "shortName" : "Ravi",
+            "children":
+			[
+            {
+                "name": "Manjula Gunasegaran",
+                "shortName" : "Manjula",
+                "size": 3938
+            },
+            {
+                "name": "Rashmi Gurung",
+                "shortName" : "Rashmi",
+                "size": 3812
+            },
+			{
+                "name": "Kunal Sinha",
+                "shortName" : "Kunal",
+                "size": 6714
+            }
+			]
+			},
+			{
+            "name": "Sanjesh Kuniyil",
+            "shortName" : "Sanjesh",
+            "children":
+			[
+            {
+                "name": "Arun Kumar",
+                "shortName" : "Arun",
+                "size": 3534
+            },
+			{
+                "name": "Rajaram Manoharan",
+                "shortName" : "Rajaram",
+                "size": 5731
+            },
+			{
+                "name": "Manita Sahu",
+                "shortName" : "Manita",
+                "size": 7840
+            },
+			{
+                "name": "Rahul Rajusa",
+                "shortName" : "Rahul",
+                "size": 5914
+            }
+			]
+			},
+			{
+            "name": "Abhinav Jauhari",
+            "shortName" : "Abhinav",
+            "children":
+			[
+            {
+                "name": "Saurabh Gupta",
+                "shortName" : "Saurabh",
+                "size": 7074
+            }
+			]
+			}
+		]
+    },
+	{
+            "name": "Exim Vietnam",
+            "shortName" : "EximV",
+            "size": 1041
+    },
+	{
+            "name": "Federal Bank",
+            "shortName" : "FederalBnk",
+            "size": 1041
+    },
+	{
+            "name": "Ujivan Bank",
+            "shortName" : "UjivanBnk",
+            "size": 1041
+    },
+	{
+            "name": "FT-FC Position correction issue and related changes",
+            "shortName" : "FC-FT Posn",
+            "size": 1041
+    }
+	]
+}]
+}

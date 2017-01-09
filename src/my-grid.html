@@ -1,0 +1,91 @@
+
+
+<script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
+
+
+<dom-module id="my-grid">
+
+  <template  class="my-grid-with-template">
+    <vaadin-grid id="my-grid-with-template"  visible-rows="50">
+      <table>
+        <colgroup>
+          <col name="ParentNodes" resizable>
+          <col name="ChildNodes" resizable>
+          <col name="MileStones"  resizable>
+          <col name="Role" resizable>
+        </colgroup>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Parent </th>
+            <th>Name</th>
+            <th>MileStones</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template is="dom-repeat" items="{{fmtdjson}}">
+            <tr>
+              <td>{{index}}</td>
+              <td>{{item.ParentNodes}}</td>
+              <td>{{item.ChildNodes}}</td>
+              <td>{{item.MileStones}}</td>
+              <td>{{item.Role}}</td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </vaadin-grid>
+  </template>
+  <script>
+    Polymer({
+      is: "my-grid",
+
+      properties: {
+        griddata: {
+          type: Array,
+          value: function(){
+            return [];
+          },
+          //reflectToAttribute: true,
+          notify: true
+        },
+        teamdata: {
+          type: Array,
+          value: function(){
+            return [];
+          },
+          //reflectToAttribute: true,
+          notify: true
+        },
+        fmtdjson: {
+          type: Array,
+          value: function(){
+            return [];
+          },
+          reflectToAttribute: true,
+          notify: true
+        },
+      },
+
+
+      attached: function(){
+        console.log("attached fn called");
+        /*var template = template || document.querySelector('template.my-grid-with-template');
+        template.addEventListener('dom-change', function() {
+            template.griddata = griddata;
+        });
+
+        if (template.render) {
+          template.render();
+        }*/
+        console.log(this.fmtdjson);
+        console.log(this.teamdata);
+      },
+
+
+    });
+  </script>
+</dom-module>

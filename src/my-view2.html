@@ -1,0 +1,223 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<!-- <link rel="import" href="myCollapsibleTreeSimple.html"> -->
+
+<dom-module id="my-view2">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      .node {
+        cursor: pointer;
+      }
+
+      .overlay{
+          background-color:#EEE;
+      }
+
+      .node circle {
+        fill: blue;
+        stroke: steelblue;
+        stroke-width: 0.5px;
+      }
+
+      .node text {
+        font-size:10px;
+        font-family:sans-serif;
+      }
+
+      .link {
+        fill: var(--paper-indigo-300);
+        color: var(--paper-indigo-300);
+        stroke: var(--paper-indigo-300);
+        stroke-width: 0.9px;
+      }
+
+      .templink {
+        fill: none;
+        stroke: red;
+        stroke-width: 5px;
+      }
+
+      .ghostCircle.show{
+          display:block;
+      }
+
+      .ghostCircle, .activeDrag .ghostCircle{
+           display: none;
+      }
+
+
+    .tdisp {
+      position: relative;;
+      overflow: auto;
+    }
+
+    </style>
+
+    <div class="card">
+      <div class="circle">2</div>
+              <p> Display csv table here : {{showcsv2::value}} - {{teamdata2[0].name::value}} </p>
+
+              <paper-input id="dealref"  label="Deal Num" type="String" value="{{showcsv2::value}}" ></paper-input>
+      <div id="csv1Table1">
+        <template is="dom-if" if="{{showcsv2}}">
+        <template is="dom-repeat" items="{{teamdata2}}">
+        <paper-material class="card" elevation="5">
+                <p>Name : {{item.name}}</p>
+                <p>Role : {{item.role}}</p>
+                <p>Exp  : {{item.milestones}}</p>
+        </paper-material>
+        </template>
+      </template>
+      </div>
+</div>
+      <div id="csvTable"></div>
+
+  </template>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+  <script>
+    Polymer({
+      is: 'my-view2',
+
+      ready: function(){
+        console.log('ready fn called for myView2');
+        //this.showcsv2 = 0;
+      },
+
+
+      properties: {
+        showcsv2:{
+type: Boolean,
+value: false,
+notify: true,
+observer: '_makeChartObs'
+},
+        teamdata2: {
+          type: Array,
+          value: function(){
+            return [ {
+                  "name": "Top Level",
+                  "parent": "null",
+                  "children": [
+                    {
+                      "name": "Level 2: A",
+                      "parent": "Top Level",
+                      "children": [
+                        {
+                          "name": "Son of A",
+                          "parent": "Level 2: A"
+                        },
+                        {
+                          "name": "Daughter of A",
+                          "parent": "Level 2: A"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "Level 2: B",
+                      "parent": "Top Level"
+                    }
+                  ]
+                }
+            ];
+          },
+          //reflectToAttribute: true,
+          notify: true
+        },
+      },
+
+
+
+      _makeChart : function(){
+        console.log("in _make chart calling outside fn");
+        // ************** Generate the tree diagram  *****************
+        var margin = {top: 20, right: 120, bottom: 20, left: 120},
+         width = 960 - margin.right - margin.left,
+         height = 500 - margin.top - margin.bottom;
+
+        var i = 0;
+        var tree = d3.layout.tree()
+         .size([height, width]);
+
+        var diagonal = d3.svg.diagonal()
+         .projection(function(d) { return [d.y, d.x]; });
+
+        var svg = d3.select(this.$.csvTable).append("svg")
+         .attr("width", width + margin.right + margin.left)
+         .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var root = this.teamdata2[0];
+              console.log(" Update fn called in myview 2 ");
+        // Compute the new tree layout.
+        var nodes = tree.nodes(root).reverse(),
+         links = tree.links(nodes);
+
+        // Normalize for fixed-depth.
+        nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+        // Declare the nodesâ€¦
+        var node = svg.selectAll("g.node")
+         .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+        // Enter the nodes.
+        var nodeEnter = node.enter().append("g")
+         .attr("class", "node")
+         .attr("transform", function(d) {
+          return "translate(" + d.y + "," + d.x + ")"; });
+
+        nodeEnter.append("circle")
+         .attr("r", 10)
+         .style("fill", "#fff");
+
+        nodeEnter.append("text")
+         .attr("x", function(d) {
+          return d.children || d._children ? -13 : 13; })
+         .attr("dy", ".35em")
+         .attr("text-anchor", function(d) {
+          return d.children || d._children ? "end" : "start"; })
+         .text(function(d) { return d.name; })
+         .style("fill-opacity", 1);
+
+        // Declare the linksâ€¦
+        var link = svg.selectAll("path.link")
+         .data(links, function(d) { return d.target.id; });
+
+        // Enter the links.
+        link.enter().insert("path", "g")
+         .attr("class", "link")
+         .attr("d", diagonal);
+
+      },
+
+      _makeChartObs : function(){
+        console.log(" observer method called for make chart");
+        if ( this.showcsv2){
+          console.log(" calling make chart from observer ");
+          this._makeChart();
+        }
+      },
+
+            attached: function(){
+              console.log("attached fn called for myView2");
+        //      this._makeChart();
+            },
+    });
+  </script>
+</dom-module>
